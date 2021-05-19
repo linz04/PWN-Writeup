@@ -25,6 +25,6 @@ Program compiled on **ubuntu:18.04** that mean libc version is 2.27
 I solved this with overwrite **__free_hook** to **one_gadget**
 
 
-[Full Sript](https://github.com/L29/Binary-Writeup/blob/main/dCTF/Formats%20last%theorem/exploit.py)
+[Full Sript](https://github.com/L29/Binary-Writeup/blob/main/dCTF/Formats%20last%20theorem/exploit.py)
 
 ![Flag](format.png)
