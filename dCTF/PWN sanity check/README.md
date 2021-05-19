@@ -46,3 +46,6 @@ Just need jump to **system('/bin/sh')**
 .text:00000000004006DB                 lea     rdi, command    ; "/bin/sh" << jump to here
 .text:00000000004006E2                 call    _system
 ```
+
+dont forget to add some **ret** for bypass the allignment
+[Full Sript](https://github.com/L29/Binary-Writeup/blob/main/dCTF/PWN%20sanity%20check/exploit.py)
