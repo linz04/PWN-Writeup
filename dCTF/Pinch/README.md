@@ -35,3 +35,5 @@ Just need jump to **system('/bin/sh')**
 dont forget to add some **ret** for bypass the allignment
 
 [Full Sript](https://github.com/L29/Binary-Writeup/blob/main/dCTF/Pinch/exploit.py)
+
+![Flag](Pinch.png)
