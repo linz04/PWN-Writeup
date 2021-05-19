@@ -40,10 +40,8 @@ int __fastcall win(int a1, int a2)
 ```
 
 Welp i solve this without following the conditions in **win** function.
-Just need jump to 
-```c
-system("/bin/sh")
-``` 
+Just need jump to **system('/bin/sh')**
+
 ```
 .text:00000000004006DB                 lea     rdi, command    ; "/bin/sh" << jump to here
 .text:00000000004006E2                 call    _system
