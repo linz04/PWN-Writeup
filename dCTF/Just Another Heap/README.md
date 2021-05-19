@@ -56,7 +56,7 @@ add(0x30) #1
 free(0)
 ```
 
-Program using **fgets()** for payload, but in **sub_400FC7()** or **edit()** function program use **read()**
+Program using **fgets()** for payload, but in **sub_400FC7()** or **edit()** function, program use **read()**
 So we can use this for leak the libc
 
 ```py
