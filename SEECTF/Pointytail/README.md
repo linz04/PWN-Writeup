@@ -8,7 +8,7 @@
 
 
 ### Introduction
-In this challenge we are given 6 files including the Dockerfile.
+In this challenge we are given 6 files including the Dockerfile.\
 The challenge file is in *pointytail.dll*. First step here we analyze what file is it just type command
 ```bash
 file pointytail.dll
