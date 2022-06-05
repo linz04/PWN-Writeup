@@ -283,3 +283,5 @@ Next run it on nc service, we got some problem, because the environtment is diff
 ![pointytail](images/pointytail9.png)
 The offset on local is 0x9340 and on server is 0x92b0, with this just change the offset from 0xe9340 to 0xe92b0 to get correct rwxp address.
 ![pointytail](images/pointytail10.png)
+
+For full script see [Here](https://github.com/linz04/PWN-Writeup/blob/international/SEECTF/Pointytail/exploit.py)
