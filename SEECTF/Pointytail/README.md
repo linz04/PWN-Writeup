@@ -66,8 +66,8 @@ private static void Main()
 
 ```
 
-The *Main()* function declare the *PointStruct* and fill it with double value, and then call *Main2(ref s)* function.\
-The *PointStruct* it's look like this.
+The **Main()** function declare the *PointStruct* and fill it with double value, and then call **Main2(ref s)** function.\
+The **PointStruct** it's look like this.
 
 ```c#
 private struct PointStruct
@@ -91,7 +91,7 @@ private static void Main2(ref PointStruct s)
 	Main3(ref s, ref c);
 }
 ```
-This function declare *PointClass* and fill with double value again, the Class it's look like this:
+This function declare **PointClass** and fill with double value again, the Class it's look like this:
 ```c#
 private class PointClass
 {
@@ -101,7 +101,7 @@ private class PointClass
 }
 ```
 
-Next *Main3()* function:
+Next **Main3()** function:
 ```c#
 private static void Main3(ref PointStruct s, ref PointClass c)
 {
@@ -131,3 +131,53 @@ private static void Main3(ref PointStruct s, ref PointClass c)
 	}
 }
 ```
+
+The challenge will be start from this function, honestly i dont understand too much about C#. But this code not too complicated, the program will ask our input, if our input start with **s** followed by the double value, then it will fill the object of **s**, this same with object of **c**. And if our input not started with **s** or **c**, it will print the result.
+
+```bash
+$ dotnet pointytail.dll
+$ Which is better, a struct or a class? Why not both!
+$ 1
+$ s = (6.93762983151493E-310, 6.95307569920877E-310)
+$ c = (0.9251204335393668, 0.26444549835642683)
+$ c 0 0
+$ 1
+$ s = (6.93762983151493E-310, 6.95307569920877E-310)
+$ c = (0, 0)
+
+````
+Well, honestly i dont have idea where the bug is from just read the code. But after try some random input, I found an interesting error while debugging at gdb.\
+For debugging I use script like this.
+```py
+from pwn import *
+from sys import *
+
+
+HOST = "fun.chall.seetf.sg"
+PORT = 50007
+p = process(["dotnet", "pointytail.dll"])
+print(util.proc.pidof(p))
+p.interactive()
+```
+Then just attach the pidof at gdb. When we Input `s 0 0` the error show Index was out of bound.\
+Next here I try to convert the first value of **s** from decimal to hex to see what is that.
+
+```py
+def do2hex(f):
+	return (struct.unpack('<Q', struct.pack('<d', f))[0])
+
+p.sendline(b'1')
+p.recvuntil(b's = ')
+
+res = (p.recvline()[1:-2]).split(b', ')
+s1 = do2hex(float(res[0]))
+s2 = do2hex(float(res[1]))
+print(hex(s1), hex(s2))
+p.interactive()
+```
+
+We got Leak an address, because of this leak now I understand a bit about the code, from what I got, in **Main3()** var s represent as **\*\*s**, you can see again in **Main()** function, `PointStruct s = pointStruct;` and the pointStruct is `PointStruct pointStruct = default(PointStruct);`. So in **Main3()** function when the program print `(object)s.x` instead print the value of *pointStruct.x* it will print the address **pointStruct** itself. So that **s** will be pointing to **c**\
+
+Oke let me simply this.\
+var **s** its a pointer contains value of var **c**. So with this we found the bug where we can arbitary write and read. To validate that let's see at gdb.
+![Drag Racing](images/pointytail.png)
