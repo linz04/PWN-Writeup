@@ -160,7 +160,7 @@ p = process(["dotnet", "pointytail.dll"])
 print(util.proc.pidof(p))
 p.interactive()
 ```
-Then just attach the pidof at gdb. When we Input `s 0 0` the error show Index was out of bound.\
+Then just attach the pidof at gdb. When we Input `s 0 0` the error show Object reference is not set.\
 ![pointytail](images/pointytail1.png)
 Next here I try to convert the first value of **s** from decimal to hex to see what is that.
 
