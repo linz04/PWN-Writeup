@@ -1,4 +1,5 @@
 ## Pointy Tail
+![pointytail](images/pointytail.png)
 
 ### Description
 >Author: Neobeo\
@@ -160,6 +161,7 @@ print(util.proc.pidof(p))
 p.interactive()
 ```
 Then just attach the pidof at gdb. When we Input `s 0 0` the error show Index was out of bound.\
+![pointytail](images/pointytail1.png)
 Next here I try to convert the first value of **s** from decimal to hex to see what is that.
 
 ```py
@@ -175,9 +177,10 @@ s2 = do2hex(float(res[1]))
 print(hex(s1), hex(s2))
 p.interactive()
 ```
+![pointytail](images/pointytail2.png)
 
 We got Leak an address, because of this leak now I understand a bit about the code, from what I got, in **Main3()** var s represent as **\*\*s**, you can see again in **Main()** function, `PointStruct s = pointStruct;` and the pointStruct is `PointStruct pointStruct = default(PointStruct);`. So in **Main3()** function when the program print `(object)s.x` instead print the value of *pointStruct.x* it will print the address **pointStruct** itself. So that **s** will be pointing to **c**\
 
 Oke let me simply this.\
 var **s** its a pointer contains value of var **c**. So with this we found the bug where we can arbitary write and read. To validate that let's see at gdb.
-![Drag Racing](images/pointytail.png)
+![pointytail](images/pointytail3.png)
