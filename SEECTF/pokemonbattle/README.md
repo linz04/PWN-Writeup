@@ -124,7 +124,7 @@ Dump of assembler code for function _Z3winv:
    0x00005555555552cd <+15>:	call   0x5555555550c0 <system@plt>
 ```
 Overwrite to **0xc6**.\
-With this now we solve the challenge.\
+With this now we solve the challenge.
 
 Full script:
 
