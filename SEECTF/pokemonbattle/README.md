@@ -74,7 +74,7 @@ p.sendline(payload)
 
 Now we have unlimited formatstring. If you look at the stack rightnow the stack step back 0x20.
 
-![pokemon](images/pokemon6.png)
+![pokemon](images/pokemon7.png)
 
 Its because when we call **Play()** again the stack reduced by 0x20. Our goal is to overwrite address of return which is located at
 `0x7fffffffdd78 -> 0x00005555555552b7 (return main+20)`. But we dont have that stack on any offset at formatstring.\
