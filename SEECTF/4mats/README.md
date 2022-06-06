@@ -101,7 +101,8 @@ mat7:
 }
 ```
 
-We can leak the **fav_num** with formatstring vuln at offset 7, just input `%7$p`.\
+We can leak the **fav_num** with formatstring vuln at offset 7, just input `%7$d`.\
+![pointytail](images/4mats2.png)
 For prevent **fav_num** to random again, we need set the **set** value to 4 first then leak the favnum.\
 After that just input anything but not 1 or 2, the it will jump to default and because set value was 4, it will go to **mat4** and call the **guess_me()** function.\
 Now just input the number and got the flag.
