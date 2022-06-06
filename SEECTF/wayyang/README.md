@@ -1,15 +1,15 @@
 ## Wayyang
-![pointytail](images/wayyang.png)
+![wayyang](images/wayyang.png)
 
 ### Description
->Author: Fawl
->Infintesky as a service <3
->nc fun.chall.seetf.sg 50008
+>Author: Fawl\
+>Infintesky as a service <3\
+>nc fun.chall.seetf.sg 50008\
 >MD5: b2fda586e0324449e9337fdad8a62757
 
 
 
-### Introduction
+### Gain Shell
 Python Jail challenge, the source code was given and it look like this
 ```py
 #!/usr/local/bin/python

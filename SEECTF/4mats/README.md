@@ -1,5 +1,5 @@
 ## 4mats
-![pointytail](images/4mats.png)
+![4mats](images/4mats.png)
 
 ### Description
 >Author: Enyei\
@@ -9,7 +9,7 @@
 >https://ctf101.org/binary-exploitation/what-is-a-format-string-vulnerability/ \
 >MD5: ceb6336c44a38f093de9bfb3e3902a0
 
-### Introduction
+### Gain Shell
 This is just a basic formatstring vuln challenge. The source code was given, and it look like this.
 ```c
 #include <stdio.h>

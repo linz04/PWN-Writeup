@@ -2,13 +2,12 @@
 ![overflow](images/easyoverflow.png)
 
 ### Description
->Author: @L0uisJ0shua
->It’s about drive, it’s about power, we stay hungry, we devour Put in the work, put in the hours and take what’s ours. Time to get to the Hall of Fame and be among the GOATS.
->nc fun.chall.seetf.sg 50004
->sMD5: 3264e936e673b0de0ec61698b9bb930f
+>I did a check on my return address. Now you shouldn't be able to control my RIP.\
+>nc fun.chall.seetf.sg 50003\
+>MD5: a9a706d9b8d73ec0ee5c39bf0505d85e
 
 
-### Introduction
+### Gain Shell
 Bufferoverflow challenge, but this time no sourcecode given, we can decompile the ELF file with IDA or Ghidra. Here I'm using IDA7.7.\
 No PIE and no Canary.
 ```bash
