@@ -1,4 +1,4 @@
-## Pointy Tail
+## Wayyang
 ![pointytail](images/wayyang.png)
 
 ### Description

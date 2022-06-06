@@ -1,4 +1,4 @@
-## Pointy Tail
+## 4mats
 ![pointytail](images/4mats.png)
 
 ### Description
