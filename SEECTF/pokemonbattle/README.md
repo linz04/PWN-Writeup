@@ -52,14 +52,12 @@ After:
 0x555555558150 (batler) -> (any_address) -> (win())
 ``` 
 
-To do our goal before it will write many input and its too complicated. So change our goal to overwrite the return address of **Battle()**
+To do our goal before it will write many input and its too complicated. So change our goal to overwrite the return address of **Battle()** to **win()**
 
-
-So we need an address which contain address of win(). Because the PIE was enabled we need find the value near the addres of win. Luckily we have one.\
-![pokemon](images/pokemon3.png)
-Now how to overwrite the vtable? We only have one time formatstring. And the formatstring is in **BSS** not in stack, so we cant use technique like usual.\
 
 Alright, first we need more than one formatstring, to do that we need overwrite vtable to **Play()** again.
+Now how to overwrite the vtable? We only have one time formatstring. And the formatstring is in **BSS** not in stack, so we cant use technique like usual.\
+
 ![pokemon](images/pokemon4.png)
 
 So we must overwrite just 1 bytes vtable from **0x68** to **0x70**. To do that because the address of battler is at offset 7 on formatstring. We can use that offset to overwrite the vtable.
