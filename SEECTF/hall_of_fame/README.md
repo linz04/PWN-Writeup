@@ -58,7 +58,7 @@ The challenge is running on **main()** function.
 ```
 
 If you look at the code we already got leak address, and there's a overflow on heap also. When we add Hall of Fame, the program will ask the size and malloc it, and then ask for input again for the data with size **100**.\
-So if we input size < 100 we will have an overflow. Because the libc version is 2.27 so to solve this challenge just use [**House of Force**](https://heap-exploitation.dhavalkapil.com/attacks/house_of_force) technique.\
+So if we input size < 100 we will have an overflow. Because the libc version is 2.27 so to solve this challenge just use [**House of Force**](https://heap-exploitation.dhavalkapil.com/attacks/house_of_force) technique.
 
 Full script:
 ```py

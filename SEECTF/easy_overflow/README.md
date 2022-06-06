@@ -19,7 +19,7 @@ linuz@linz:~/Desktop/CSI/Writeup/International/PWN-Writeup/SEECTF/easy_overflow$
     NX:       NX enabled
     PIE:      No PIE (0x400000)
 ```
-The **main()** function it's like this:\
+The **main()** function it's like this:
 ```c
 int __cdecl main(int argc, const char **argv, const char **envp)
 {
@@ -36,7 +36,7 @@ int __cdecl main(int argc, const char **argv, const char **envp)
 }
 ```
 
-And the **vuln()** function is like this:\
+And the **vuln()** function is like this:
 ```c
 int vuln()
 {
