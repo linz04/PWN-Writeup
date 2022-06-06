@@ -1,4 +1,4 @@
-## Hall of Fame
+## Pokemon Battle
 ![pokemon](images/pokemon.png)
 
 ### Description
