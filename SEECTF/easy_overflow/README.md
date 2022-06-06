@@ -56,7 +56,7 @@ int vuln()
 
 There's a bufferoverflow in **vuln()** because program using **gets()** but there's a manual check on return if return not **main+70** it will exit.\
 With this bufferoverflow we can overwrite the address of **s** at **main()** function. So after back to main it will like this.\
-![overflow](images/easyoverflow1.png)
+![overflow](images/easyoverflow2.png)
 ```py
 payload = b'A'*32
 payload += p64(0xdeadbeef)
