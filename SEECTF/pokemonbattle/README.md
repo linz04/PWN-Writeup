@@ -52,6 +52,9 @@ After:
 0x555555558150 (batler) -> (any_address) -> (win())
 ``` 
 
+To do our goal before it will write many input and its too complicated. So change our goal to overwrite the return address of **Battle()**
+
+
 So we need an address which contain address of win(). Because the PIE was enabled we need find the value near the addres of win. Luckily we have one.\
 ![pokemon](images/pokemon3.png)
 Now how to overwrite the vtable? We only have one time formatstring. And the formatstring is in **BSS** not in stack, so we cant use technique like usual.\
@@ -71,7 +74,7 @@ p.sendline(payload)
 
 ![pokemon](images/pokemon6.png)
 
-Now we have unlimited formatstring. If you look at the stack rightnow the stack step back 0x20.
+Now we have unlimited formatstring. If you look at the stack rightnow the stack step back 0x20.\
 
 ![pokemon](images/pokemon6.png)
 
