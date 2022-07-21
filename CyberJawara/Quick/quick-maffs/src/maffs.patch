@@ -1,0 +1,27 @@
+diff --git a/src/compiler/js-create-lowering.cc b/src/compiler/js-create-lowering.cc
+index 50a523c606..0b46267c4f 100644
+--- a/src/compiler/js-create-lowering.cc
++++ b/src/compiler/js-create-lowering.cc
+@@ -683,9 +683,6 @@ Reduction JSCreateLowering::ReduceJSCreateArray(Node* node) {
+         length_type.Max() <= kElementLoopUnrollLimit &&
+         length_type.Min() == length_type.Max()) {
+       int capacity = static_cast<int>(length_type.Max());
+-      // Replace length with a constant in order to protect against a potential
+-      // typer bug leading to length > capacity.
+-      length = jsgraph()->Constant(capacity);
+       return ReduceNewArray(node, length, capacity, *initial_map, elements_kind,
+                             allocation, slack_tracking_prediction);
+     }
+diff --git a/src/compiler/operation-typer.cc b/src/compiler/operation-typer.cc
+index e7dc51bd2d..121a7a7107 100644
+--- a/src/compiler/operation-typer.cc
++++ b/src/compiler/operation-typer.cc
+@@ -411,7 +411,7 @@ Type OperationTyper::NumberCosh(Type type) {
+ 
+ Type OperationTyper::NumberExp(Type type) {
+   DCHECK(type.Is(Type::Number()));
+-  return Type::Union(Type::PlainNumber(), Type::NaN(), zone());
++  return Type::PlainNumber();
+ }
+ 
+ Type OperationTyper::NumberExpm1(Type type) {

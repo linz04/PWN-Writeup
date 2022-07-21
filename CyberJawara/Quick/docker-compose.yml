@@ -1,0 +1,6 @@
+version: "3"
+services:
+  quickmaffs:
+    build: .
+    ports:
+      - "50001:1337"
